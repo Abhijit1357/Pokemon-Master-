@@ -1,4 +1,4 @@
-from telegram import Update, ReplyKeyboardMarkup
+from telegram import Update, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
 from config import BOT_TOKEN
@@ -17,9 +17,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     get_or_create_player(user_id)
     desc = get_current_zone_description(user_id)
+
     await update.message.reply_text(
         f"Welcome to Pokemon Master!\n\n{desc}",
         reply_markup=markup
+    )
+
+    # Inline channel button
+    channel_button = InlineKeyboardMarkup([
+        [InlineKeyboardButton("Our Channel", url="https://t.me/Pokemon_Master_x")]
+    ])
+
+    await update.message.reply_text(
+        "Check out our channel for updates!",
+        reply_markup=channel_button
     )
 
 # Handle directional movement
