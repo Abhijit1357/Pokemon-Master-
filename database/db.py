@@ -13,6 +13,8 @@ def get_or_create_player(user_id):
             "x": START_X,
             "y": START_Y,
             "pokemons": [],
+            "region": None,
+            "starter_pokemon": None,
             "wins": 0,
             "losses": 0
         }
@@ -34,3 +36,18 @@ def update_battle_result(user_id, won):
         {"user_id": user_id},
         {"$inc": {field: 1}}
     )
+
+def set_player_region(user_id, region):
+    players.update_one(
+        {"user_id": user_id},
+        {"$set": {"region": region}}
+    )
+
+def set_starter_pokemon(user_id, pokemon_name):
+    players.update_one(
+        {"user_id": user_id},
+        {
+            "$set": {"starter_pokemon": pokemon_name},
+            "$push": {"pokemons": pokemon_name}
+        }
+)
